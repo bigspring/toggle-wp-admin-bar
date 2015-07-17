@@ -11,10 +11,12 @@ Author URI: http://bigspring.co.uk
 if (!function_exists('twpab_load_script')) {
     add_action('wp_enqueue_scripts', 'twpab_load_script');
     function twpab_load_script() {
-        $css = '<style>'.twpab_get_css().'</style>';
-        wp_register_script('toggle-wp-admin-bar-js', plugins_url('assets/main.js', __FILE__), array('jquery'), false, true);
-        wp_localize_script('toggle-wp-admin-bar-js', 'css', $css);
-        wp_enqueue_script( 'toggle-wp-admin-bar-js' );
+        if (is_user_logged_in() && is_admin_bar_showing()) {
+            $css = '<style>' . twpab_get_css() . '</style>';
+            wp_register_script('toggle-wp-admin-bar-js', plugins_url('assets/main.js', __FILE__), array('jquery'), false, true);
+            wp_localize_script('toggle-wp-admin-bar-js', 'css', $css);
+            wp_enqueue_script('toggle-wp-admin-bar-js');
+        }
     }
 }
 
